@@ -1,29 +1,38 @@
 <?php
 // PHP 8.4
-namespace SCHCar;
+namespace SCHCar\Car;
 
-class Car
+use SCHCar\enum\CarStatus;
+use SCHCar\enum\ChargeStatus;
+use SCHCar\enum\FuelType;
+use SCHCar\enum\GearMode;
+
+class Car implements CarInterface
 {
-
-    public protected(set) int $engine = 0;
     public protected(set) string $color;
     public protected(set) int $year;
     public protected(set) int $currentPassengers = 0;
     public protected(set) int $fuelLevelPercentage = 0;
     public protected(set) CarStatus $status;
+    public protected(set) ChargeStatus $chargeStatus;
+    public protected(set) int $batteryLevelPercentage = 0;
     public protected(set) FuelType $fuelType;
     public protected(set) GearMode $gearMode;
 
     public function __construct(
         public private(set) string $company,
         public private(set) string $model
-    )
-    {
+    ){}
 
+    public function __invoke(): void
+    {
+        $this->batteryLevelPercentage = 0;
         $this->fuelLevelPercentage = 0;
-        $this->status = CarStatus::CLOSED;
         $this->year = date('Y');
         $this->color = 'white';
+        $this->setGearMode(GearMode::P);
+        $this->status = CarStatus::CLOSED;
+        $this->chargeStatus = ChargeStatus::NOT_SUPPORTED;
     }
 
 
@@ -31,11 +40,6 @@ class Car
         get {
             $this->company . ' ' . $this->model;
         }
-    }
-
-    public function fillFuel(int $percentage): void
-    {
-        $this->fuelLevelPercentage += $percentage;
     }
 
     public function turnOn(): void
@@ -92,5 +96,45 @@ class Car
         $this->turnOff();
         $this->removePassengers($this->currentPassengers);
         $this->close();;
+    }
+
+    public function fillFuel(int $percentage): void
+    {
+        if(!in_array($this->fuelType, [FuelType::DIESEL, FuelType::PB, FuelType::PLUG_IN])){
+            throw new \Exception('Fill fuel action not supported');
+        }
+
+        $this->fuelLevelPercentage += $percentage;
+    }
+
+    public function charge(int $amount): void
+    {
+        if($this->chargeStatus === ChargeStatus::NOT_SUPPORTED) {
+            throw new \Exception('Charging not supported');
+        }
+
+        $this->park();
+        $this->plugIn();
+        $this->status = CarStatus::CHARGING;
+        sleep($amount);
+        $this->batteryLevelPercentage += $amount;
+        $this->chargeStatus = ChargeStatus::CHARGED;
+    }
+
+    public function plugOut(): void
+    {
+        if($this->chargeStatus === ChargeStatus::CHARGED) {
+            $this->chargeStatus = ChargeStatus::NOT_PLUGGED;
+        }
+    }
+
+
+    public function plugIn(): void
+    {
+        if($this->chargeStatus === ChargeStatus::NOT_SUPPORTED) {
+            throw new \Exception('Charging not supported');
+        }
+
+        $this->status = CarStatus::PLUGGED;
     }
 }

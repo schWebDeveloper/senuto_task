@@ -1,6 +1,6 @@
 <?php
 
-namespace SCHCar;
+namespace SCHCar\enum;
 enum GearMode
 {
     case P;
