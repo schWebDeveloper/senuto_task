@@ -1,0 +1,15 @@
+Obrona przed botami
+
+1. W zadaniu nie było nic mówione o tym że nie można dodać nowego pola.  Dodajemy pole nr telefonu, gdzie przychodzi kod sms i trzeba wpisać go w formularz. W tym przypadku chcąc masowo zakładać konta trzeba by albo kupić dużo kart sim, albo pokusić się o zainfekowanie dużej liczby telefonów i w sposób ukryty przechwycić sms’y. Stosunek nakładów do efektu (założenie konta) może już być mało opłacalny by się w to bawić.
+
+2. Zabezpieczenie “behawioralne”. Analiza ruchu. Przykładowy normalny użytkownik z reguły wchodzi na stronę główną, potem dopiero zakłada konto. Więc jeżeli następują szybkie wejścia z różnych IP na stronę zakładanie konta i bardzo szybkie założenia konta.
+Czyli bezpośrednie wejście na stronę rejestracji z nowego IP,  czas od momentu załadowania strony do momentu wysłania formularza bardzo szybki to można założyć, że jest to ruch generowany przez boty. Nie jest to idealne rozwiązanie dające 100% bezpieczeństwa, gdyż boty mogą być modyfikowane by zachowywały się wolniej bardziej po “ludzku”.
+
+3. Rozproszenie ruchu na wiele serwerów, skorzystanie z usług CDN
+
+4. Wychwytywanie podejrzanego ruchu - na podstawie historycznych danych wiemy ile średnio kont na godzinę zakładanych z jakich regionów. Jeżeli nie było żadnej akcji marketingowej i ruch pochodzi z krajów, których nasza
+
+5. Redundancja posiadanie zapasowych serwerów, infrastruktury, która może być szybko przepięta w razie kryzysowej sytuacji.
+
+6. Tworzenie kopii zapasowych w celu szybkiego przywrócenia usług
+
