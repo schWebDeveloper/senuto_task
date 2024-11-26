@@ -14,4 +14,10 @@ class ElectricCar extends Car
         $this->chargeStatus = ChargeStatus::NOT_PLUGGED;
     }
 
+
+    public function prepareForDrive(): void
+    {
+        $this->charge(100);
+    }
+
 }

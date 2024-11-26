@@ -83,6 +83,11 @@ class Car implements CarInterface
         $this->currentPassengers -= $amount;
     }
 
+    public function startDrive(): void
+    {
+        $this->prepareForDrive();
+        $this->drive();
+    }
     public function drive(): void
     {
         $this->open();
@@ -98,12 +103,16 @@ class Car implements CarInterface
         $this->close();;
     }
 
+    public function prepareForDrive(): void
+    {
+    }
+
     public function fillFuel(int $percentage): void
     {
         if(!in_array($this->fuelType, [FuelType::DIESEL, FuelType::PB, FuelType::PLUG_IN])){
             throw new \Exception('Fill fuel action not supported');
         }
-
+        $this->park();
         $this->fuelLevelPercentage += $percentage;
     }
 
@@ -119,10 +128,15 @@ class Car implements CarInterface
         sleep($amount);
         $this->batteryLevelPercentage += $amount;
         $this->chargeStatus = ChargeStatus::CHARGED;
+        $this->plugOut();
     }
 
     public function plugOut(): void
     {
+        if($this->chargeStatus === ChargeStatus::NOT_SUPPORTED) {
+            throw new \Exception('Charging not supported');
+        }
+
         if($this->chargeStatus === ChargeStatus::CHARGED) {
             $this->chargeStatus = ChargeStatus::NOT_PLUGGED;
         }

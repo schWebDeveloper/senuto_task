@@ -13,4 +13,9 @@ class PbCar extends Car
         $this->fuelType = FuelType::PB;
         $this->chargeStatus = ChargeStatus::NOT_SUPPORTED;
     }
+
+    public function prepareForDrive(): void
+    {
+        $this->fillFuel(100);
+    }
 }

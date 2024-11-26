@@ -6,6 +6,7 @@ use SCHCar\enum\FuelType;
 
 interface CarInterface
 {
+    public function prepareForDrive(): void;
     public function fillFuel(int $percentage): void;
 
     public function turnOn();
@@ -29,5 +30,7 @@ interface CarInterface
     public function setFuelType(FuelType $fuelType): void;
 
     public function plugIn();
+
+    public function startDrive();
 
 }

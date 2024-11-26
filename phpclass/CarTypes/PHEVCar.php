@@ -14,4 +14,11 @@ class PHEVCar extends Car
         $this->chargeStatus = ChargeStatus::NOT_PLUGGED;
     }
 
+
+    public function prepareForDrive(): void
+    {
+        $this->fillFuel(100);
+        $this->charge(100);
+    }
+
 }

@@ -14,4 +14,8 @@ class DieselCar extends Car
         $this->chargeStatus = ChargeStatus::NOT_SUPPORTED;
     }
 
+    public function prepareForDrive(): void
+    {
+        $this->fillFuel(100);
+    }
 }
